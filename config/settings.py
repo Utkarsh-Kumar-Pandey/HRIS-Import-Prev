@@ -4,7 +4,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "exercise-only-secret-key"
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "hris-import-prev.vercel.app",
+]
 
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
