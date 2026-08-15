@@ -1,0 +1,16 @@
+employee_id,employee_name,email,manager_id,manager_email,department
+CEO1,Jordan Lee,jordan@example.com,,,Executive
+MGR1,Priya Shah,priya@example.com,CEO1,jordan@example.com,Engineering
+ENG1,"Morgan, Alex",ALEX@EXAMPLE.COM,MGR1,priya@example.com,Engineering
+ENG2,Casey Kim,casey@example.com,MGR1,,Engineering
+OPS1,Riley Singh,riley@example.com,,jordan@example.com,Operations
+C1,Cycle One,c1@example.com,C2,,Research
+C2,Cycle Two,c2@example.com,C3,,Research
+C3,Cycle Three,c3@example.com,C1,,Research
+TAIL1,Tail Person,tail@example.com,C1,,Research
+BAD1,Missing Manager,bad1@example.com,NOPE,,Sales
+CONFLICT1,Conflict Person,conflict@example.com,MGR1,jordan@example.com,Sales
+SELF1,Self Person,self@example.com,SELF1,,Sales
+DUP1,Duplicate One,dup1@example.com,,,Finance
+DUP1,Duplicate Two,dup2@example.com,,,Finance
+DUP3,Duplicate Email,DUP1@example.com,,,Finance

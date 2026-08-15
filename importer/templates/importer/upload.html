@@ -1,0 +1,53 @@
+{% extends "importer/base.html" %}
+
+{% block title %}Upload CSV | HRIS Import Preview{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">HRIS import checker</p>
+  <h1>Preview your employee import before it goes anywhere.</h1>
+  <p class="hero-copy">
+    Upload an HRIS CSV export to validate employee identities, resolve managers,
+    and inspect reporting relationships. The file is analyzed in memory only.
+  </p>
+</section>
+
+<section class="card upload-card" aria-labelledby="upload-heading">
+  <div class="section-heading">
+    <div>
+      <h2 id="upload-heading">Upload HRIS CSV</h2>
+      <p>Select one CSV file using the required HRIS columns.</p>
+    </div>
+    <span class="status-pill">CSV</span>
+  </div>
+
+  {% if upload_error %}
+    <div class="alert alert-error" role="alert">
+      <strong>Couldn’t analyze this file.</strong>
+      <span>{{ upload_error }}</span>
+    </div>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data" class="upload-form">
+    {% csrf_token %}
+    <div class="file-field">
+      <label for="hris_file">HRIS export</label>
+      <input id="hris_file" name="hris_file" type="file" accept=".csv,text/csv" required>
+      <p class="field-help">UTF-8 CSV, with or without a BOM. No data is persisted.</p>
+    </div>
+    <button class="button button-primary" type="submit">Analyze import</button>
+  </form>
+
+  <div class="requirements" aria-label="Required CSV columns">
+    <p class="requirements-title">Required columns</p>
+    <div class="column-list">
+      <code>employee_id</code>
+      <code>employee_name</code>
+      <code>email</code>
+      <code>manager_id</code>
+      <code>manager_email</code>
+      <code>department</code>
+    </div>
+  </div>
+</section>
+{% endblock %}

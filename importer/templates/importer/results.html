@@ -1,0 +1,149 @@
+{% extends "importer/base.html" %}
+
+{% block title %}Import Results | HRIS Import Preview{% endblock %}
+
+{% block content %}
+<section class="results-header">
+  <div>
+    <p class="eyebrow">Analysis complete</p>
+    <h1>Import preview</h1>
+    <p class="hero-copy">Review what will be accepted and any hierarchy issues found in the source file.</p>
+  </div>
+  <a class="button button-secondary" href="/">Analyze another file</a>
+</section>
+
+<section class="summary-grid" aria-label="Import summary">
+  <article class="summary-card">
+    <span class="summary-label">Source rows</span>
+    <strong class="summary-value">{{ result.total_rows }}</strong>
+    <span class="summary-note">Data rows in the uploaded file</span>
+  </article>
+  <article class="summary-card">
+    <span class="summary-label">Accepted employees</span>
+    <strong class="summary-value">{{ result.accepted_count }}</strong>
+    <span class="summary-note">Included in hierarchy analysis</span>
+  </article>
+  <article class="summary-card{% if result.errors %} summary-card-warning{% endif %}">
+    <span class="summary-label">Validation errors</span>
+    <strong class="summary-value">{{ result.errors|length }}</strong>
+    <span class="summary-note">Rows needing attention</span>
+  </article>
+</section>
+
+<section class="card section-card">
+  <div class="section-heading">
+    <div>
+      <h2>Validation errors</h2>
+      <p>Identity and manager-reference issues, with original CSV row numbers.</p>
+    </div>
+    <span class="count-pill{% if result.errors %} count-pill-error{% endif %}">{{ result.errors|length }}</span>
+  </div>
+
+  {% if result.errors %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Source row</th><th>Error</th></tr>
+        </thead>
+        <tbody>
+          {% for error in result.errors %}
+            <tr>
+              <td><span class="row-badge">Row {{ error.row_number }}</span></td>
+              <td>{{ error.message }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">No validation errors found.</div>
+  {% endif %}
+</section>
+
+<section class="card section-card">
+  <div class="section-heading">
+    <div>
+      <h2>Root employees</h2>
+      <p>Accepted employees with both manager fields left blank.</p>
+    </div>
+    <span class="count-pill">{{ result.root_employees|length }}</span>
+  </div>
+
+  {% if result.root_employees %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th></tr></thead>
+        <tbody>
+          {% for employee in result.root_employees %}
+            <tr>
+              <td><code class="id-code">{{ employee.employee_id }}</code></td>
+              <td>{{ employee.employee_name }}</td>
+              <td class="muted-cell">{{ employee.email }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">No root employees found.</div>
+  {% endif %}
+</section>
+
+<section class="card section-card">
+  <div class="section-heading">
+    <div>
+      <h2>Managers and direct reports</h2>
+      <p>Only employees with at least one resolved direct report are listed.</p>
+    </div>
+    <span class="count-pill">{{ result.manager_direct_report_counts|length }}</span>
+  </div>
+
+  {% if result.manager_direct_report_counts %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Direct reports</th></tr></thead>
+        <tbody>
+          {% for manager, count in result.manager_direct_report_counts %}
+            <tr>
+              <td><code class="id-code">{{ manager.employee_id }}</code></td>
+              <td>{{ manager.employee_name }}</td>
+              <td><span class="count-value">{{ count }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">No resolved managers found.</div>
+  {% endif %}
+</section>
+
+<section class="card section-card cycle-card">
+  <div class="section-heading">
+    <div>
+      <h2>Employees in reporting cycles</h2>
+      <p>Only employees that are members of a cycle are shown, not employees that merely lead into one.</p>
+    </div>
+    <span class="count-pill{% if result.cyclic_employees %} count-pill-cycle{% endif %}">{{ result.cyclic_employees|length }}</span>
+  </div>
+
+  {% if result.cyclic_employees %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th></tr></thead>
+        <tbody>
+          {% for employee in result.cyclic_employees %}
+            <tr>
+              <td><code class="id-code">{{ employee.employee_id }}</code></td>
+              <td>{{ employee.employee_name }}</td>
+              <td class="muted-cell">{{ employee.email }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">No reporting cycles found.</div>
+  {% endif %}
+</section>
+{% endblock %}

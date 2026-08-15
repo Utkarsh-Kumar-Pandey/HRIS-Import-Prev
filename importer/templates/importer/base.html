@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Validate an HRIS CSV export and preview reporting relationships before import.">
+  <title>{% block title %}HRIS Import Preview{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'importer/css/app.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="HRIS Import Preview home">
+        <span class="brand-mark" aria-hidden="true">H</span>
+        <span>HRIS Import Preview</span>
+      </a>
+      <span class="header-note">In-memory analysis</span>
+    </div>
+  </header>
+
+  <main class="shell page-content">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
