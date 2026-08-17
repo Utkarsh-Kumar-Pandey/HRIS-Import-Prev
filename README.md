@@ -118,3 +118,11 @@ Every employee is processed at most once after becoming fully processed, so the 
 - Error messages are intentionally concise and are not localized.
 - There is no schema validation beyond the requested identity/manager rules and basic malformed-CSV checks.
 - The UI is deliberately plain because styling was not part of the exercise.
+
+## Approximate implementation time
+
+Approximately 1-2 hr for the implementation and tests
+
+## AI tools used
+
+ChatGPT
